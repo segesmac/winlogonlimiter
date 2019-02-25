@@ -1,6 +1,6 @@
 <?php
 
-include("../../password.php")
+include("../../password.php");
 
 $servername = "localhost";
 $username = "timeuser";
