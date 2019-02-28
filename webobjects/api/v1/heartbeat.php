@@ -15,7 +15,7 @@ function update_heartbeat($username = "") {
 	# Update login status
 	if (isset($loginstatus) && $username != ""){
 		$stmt = mysqli_stmt_init($conn);
-		if (mysqli_stmt_prepare($stmt, "UPDATE usertimetable SET lastrowupdate = NOW(), lastheartbeat = NOW(), timeleftminutes = CASE WHEN isloggedon > 0 AND timeleftminutes > 0 THEN timeleftminutes - ROUND((time_to_sec(TIMEDIFF(NOW(),lastheartbeat))/60),2)  ELSE timeleftminutes END, bonustimeminutes = CASE WHEN isloggedon > 0 AND timeleftminutes <= 0 AND bonustimeminutes > 0 THEN bonustimeminutes - ROUND((time_to_sec(TIMEDIFF(NOW(),lastheartbeat))/60),2) ELSE bonustimeminutes END, isloggedon = ? WHERE username = ?;")){
+		if (mysqli_stmt_prepare($stmt, "UPDATE usertimetable  SET  bonustimeminutes = CASE WHEN isloggedon > 0 AND timeleftminutes <= 0 AND bonustimeminutes > 0 THEN bonustimeminutes - ROUND((TIME_TO_SEC(TIMEDIFF(NOW(),lastheartbeat))/60),2) ELSE bonustimeminutes END , timeleftminutes = CASE WHEN isloggedon > 0 AND timeleftminutes > 0 THEN timeleftminutes - ROUND((TIME_TO_SEC(TIMEDIFF(NOW(),lastheartbeat))/60),2) ELSE timeleftminutes END , lastrowupdate = NOW() , lastheartbeat = NOW() , isloggedon = ? WHERE username = ?;")){
 			mysqli_stmt_bind_param($stmt, "is", $loginstatus, $username);
                 	mysqli_stmt_execute($stmt);
                 	$affected_rows = mysqli_stmt_affected_rows($stmt);
