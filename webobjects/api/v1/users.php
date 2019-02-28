@@ -81,8 +81,8 @@ function update_user($username = "") {
 	# Update login status
 	if (isset($loginstatus) && $username != ""){
 		$stmt = mysqli_stmt_init($conn);
-		if (mysqli_stmt_prepare($stmt, "UPDATE usertimetable SET lastrowupdate = NOW(), lastheartbeat = NOW(), lastlogon = CASE WHEN isloggedon = 0 THEN NOW() ELSE lastlogon END, isloggedon = ? WHERE username = ?;")){
-			mysqli_stmt_bind_param($stmt, "is", $loginstatus, $username);
+		if (mysqli_stmt_prepare($stmt, "UPDATE usertimetable SET lastrowupdate = NOW(), lastheartbeat = NOW(), lastlogon = CASE WHEN isloggedon = 0 AND ? > 0 THEN NOW() ELSE lastlogon END, isloggedon = ? WHERE username = ?;")){
+			mysqli_stmt_bind_param($stmt, "iis", $loginstatus, $loginstatus, $username);
                 	mysqli_stmt_execute($stmt);
                 	$affected_rows = mysqli_stmt_affected_rows($stmt);
                 	mysqli_stmt_close($stmt);
