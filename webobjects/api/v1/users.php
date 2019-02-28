@@ -38,7 +38,7 @@ function get_users($username = ""){
 			'status' => -1,
                         'status_message' => "User $username doesn't exist!"
 		);
-		echo json_encode($return_response)
+		echo json_encode($return_response);
 	} else {
 		$return_response = array(
                         'status' => 1,
