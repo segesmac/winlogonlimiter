@@ -26,9 +26,26 @@ function get_users($username = ""){
 		}
 	header('Content-Type: application/json');
 	if (count($response) == 1 && $username != ""){
-		echo json_encode($response[0]);
-	} else{
-		echo json_encode($response);
+		$return_response = array(
+                        'status' => 1,
+                        'status_message' => "$username found successfully!",
+			'payload' => $response[0]
+                );
+		echo json_encode($return_response);
+		
+	} elseif (count($response) == 0){
+		$return_response = array(
+			'status' => -1,
+                        'status_message' => "User $username doesn't exist!"
+		);
+		echo json_encode($return_response)
+	} else {
+		$return_response = array(
+                        'status' => 1,
+                        'status_message' => "Found users successfully!",
+			'payload' => $response
+                );
+		echo json_encode($return_response);
 	}
 }
 
