@@ -123,15 +123,6 @@ if (!(Test-Path $permissions_path)){
 
 $permissions = Get-Content $permissions_path | ConvertFrom-Json
 
-if (!$permissions){
-    foreach ($file in Get-ChildItem "C:\scripts" -Recurse){
-        Set-Permissions $file.FullName   
-    }
-    Set-Permissions
-    $permissions = $true
-    ConvertTo-Json $permissions | Out-File $permissions_path
-}
-
 $active_user = Get-ComputerSessions | select | where SessionName -eq "console" | where State -eq "Active"
 # if there is no active user, then exit gracefully
 if (!$active_user){
@@ -142,6 +133,16 @@ if (!$active_user){
 if (!(Test-Path $superuser_path)){
     ConvertTo-Json @() | Out-File $superuser_path
 }
+
+if (!$permissions){
+    foreach ($file in Get-ChildItem "C:\scripts" -Recurse){
+        Set-Permissions $file.FullName
+    }
+    Set-Permissions
+    $permissions = $true
+    ConvertTo-Json $permissions | Out-File $permissions_path
+}
+
 $superusers = Get-Content $superuser_path | ConvertFrom-Json
 
 # if user is in the superuser list, then exit gracefully
